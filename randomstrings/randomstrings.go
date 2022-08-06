@@ -1,9 +1,17 @@
 package randomstrings
 
-import "encoding/base64"
+import (
+	"crypto/rand"
+	"encoding/base64"
+)
 
 func GenerateRandomBytes(n int) ([]byte, error) {
-
+	b := make([]byte, n)
+	_, err := rand.Read(b)
+	if err != nil {
+		return nil, err
+	}
+	return b, nil
 }
 
 func GenerateRandomString(s int) (string, error) {
