@@ -1,6 +1,10 @@
 package models
 
-import "github.com/dgrijalva/jwt-go"
+import (
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
+)
 
 type User struct {
 	Username, PasswordHash, Role string
@@ -11,3 +15,6 @@ type TokenClaims struct {
 	Role string `json:"role"`
 	Csrf string `json:"csrf"`
 }
+
+const RefreshTokenValidTime = time.Hour * 72
+const AuthTokenValidTime = time.Minute * 15
