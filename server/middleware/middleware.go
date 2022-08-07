@@ -10,11 +10,11 @@ func NewHandler() http.Handler {
 	return alice.New(recoverHandler, authHandler).ThenFunc(logicHandler)
 }
 
-func recoverHandler() http.Handler {
+func recoverHandler(next http.Handler) http.Handler {
 
 }
 
-func authHandler() http.Handler {
+func authHandler(next http.Handler) http.Handler {
 
 }
 
@@ -37,4 +37,16 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 	case "/deleteuser":
 	default:
 	}
+}
+
+func nullifyCookies(w *http.ResponseWriter, r *http.Request) {
+
+}
+
+func setAuthandRefreshCookies() {
+
+}
+
+func getCsrfToken(r *http.Request) {
+
 }
