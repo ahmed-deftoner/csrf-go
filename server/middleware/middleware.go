@@ -18,6 +18,23 @@ func authHandler() http.Handler {
 
 }
 
-func logicHandler() {
-
+func logicHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.URL.Path {
+	case "/restricted":
+	case "/login":
+		switch r.Method {
+		case "/GET":
+		case "/POST":
+		default:
+		}
+	case "/register":
+		switch r.Method {
+		case "/GET":
+		case "/POST":
+		default:
+		}
+	case "/logout":
+	case "/deleteuser":
+	default:
+	}
 }
