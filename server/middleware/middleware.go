@@ -78,8 +78,22 @@ func nullifyCookies(w *http.ResponseWriter, r *http.Request) {
 	http.SetCookie(*w, &refreshCookie)
 }
 
-func setAuthandRefreshCookies() {
+func setAuthandRefreshCookies(w *http.ResponseWriter, authTokenString string, refreshTokenString string) {
+	authCookie := http.Cookie{
+		Name:     "AuthToken",
+		Value:    authTokenString,
+		HttpOnly: true,
+	}
 
+	http.SetCookie(*w, &authCookie)
+
+	refreshCookie := http.Cookie{
+		Name:     "RefreshToken",
+		Value:    refreshTokenString,
+		HttpOnly: true,
+	}
+
+	http.SetCookie(*w, &refreshCookie)
 }
 
 func getCsrfToken(r *http.Request) {
