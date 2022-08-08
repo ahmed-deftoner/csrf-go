@@ -3,6 +3,7 @@ package middleware
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/justinas/alice"
 )
@@ -58,7 +59,23 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func nullifyCookies(w *http.ResponseWriter, r *http.Request) {
+	authCookie := http.Cookie{
+		Name:     "AuthToken",
+		Value:    "",
+		Expires:  time.Now().Add(-1000 * time.Hour),
+		HttpOnly: true,
+	}
 
+	http.SetCookie(*w, &authCookie)
+
+	refreshCookie := http.Cookie{
+		Name:     "RefreshToken",
+		Value:    "",
+		Expires:  time.Now().Add(-1000 * time.Hour),
+		HttpOnly: true,
+	}
+
+	http.SetCookie(*w, &refreshCookie)
 }
 
 func setAuthandRefreshCookies() {
