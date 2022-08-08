@@ -76,6 +76,17 @@ func nullifyCookies(w *http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(*w, &refreshCookie)
+
+	// if present, revoke the refresh cookie from our db
+	RefreshCookie, refreshErr := r.Cookie("RefreshToken")
+	if refreshErr == http.ErrNoCookie {
+		// do nothing, there is no refresh cookie present
+		return
+	} else if refreshErr != nil {
+		log.Panic("panic: %+v", refreshErr)
+		http.Error(*w, http.StatusText(500), 500)
+	}
+	myJwt.RevokeRefreshToken(RefreshCookie.Value)
 }
 
 func setAuthandRefreshCookies(w *http.ResponseWriter, authTokenString string, refreshTokenString string) {
