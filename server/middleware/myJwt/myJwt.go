@@ -2,6 +2,11 @@ package myjwt
 
 import "errors"
 
+const (
+	privKeyPath = "keys/app.rsa"
+	pubKeyPath  = "keys/app.rsa.pub"
+)
+
 func JWTInit() error {
 	return errors.New("error")
 }
