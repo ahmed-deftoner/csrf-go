@@ -1,6 +1,7 @@
 package myjwt
 
 import (
+	"crypto/rsa"
 	"io/ioutil"
 
 	"github.com/dgrijalva/jwt-go"
@@ -9,6 +10,11 @@ import (
 const (
 	privKeyPath = "keys/id_rsa"
 	pubKeyPath  = "keys/id_rsa.pub"
+)
+
+var (
+	verifyKey *rsa.PublicKey
+	signKey   *rsa.PrivateKey
 )
 
 func JWTInit() error {
