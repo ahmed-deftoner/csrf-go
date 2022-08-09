@@ -4,6 +4,7 @@ import (
 	"crypto/rsa"
 	"io/ioutil"
 
+	"github.com/ahmed-deftoner/csrf-go/db/models"
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -41,15 +42,27 @@ func JWTInit() error {
 	return nil
 }
 
-func CreateNewTokens() {
+func CreateNewTokens(uuid string, role string) (authTokenString, refreshTokenString, csrfSecret string, err error) {
+	csrfSecret, err = models.GenerateCSRFSecret()
+	if err != nil {
+		return
+	}
 
+	refreshTokenString, err = createRefreshTokenString(uuid, role, csrfSecret)
+
+	authTokenString, err = createAuthTokenString(uuid, role, csrfSecret)
+	if err != nil {
+		return
+	}
+
+	return
 }
 
 func CheckAndRefreshTokens() {
 
 }
 
-func CreateAuthTokenString() {
+func createAuthTokenString(uuid string, role string, csrfSecret string) (authTokenString string, err error) {
 
 }
 
