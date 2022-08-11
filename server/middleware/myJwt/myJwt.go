@@ -3,6 +3,7 @@ package myjwt
 import (
 	"crypto/rsa"
 	"io/ioutil"
+	"time"
 
 	"github.com/ahmed-deftoner/csrf-go/db/models"
 	"github.com/dgrijalva/jwt-go"
@@ -63,7 +64,19 @@ func CheckAndRefreshTokens() {
 }
 
 func createAuthTokenString(uuid string, role string, csrfSecret string) (authTokenString string, err error) {
+	AuthTokenExp := time.Now().Add(models.AuthTokenValidTime).Unix()
+	authClaims := models.TokenClaims{
+		jwt.StandardClaims{
+			Subject:   uuid,
+			ExpiresAt: AuthTokenExp,
+		},
+		role,
+		csrfSecret,
+	}
+	authJwt := jwt.NewWithClaims(jwt.GetSigningMethod("RS256"), authClaims)
 
+	authTokenString, err = authJwt.SignedString(signKey)
+	return
 }
 
 func createRefreshTokenString(uuid string, role string, csrfString string) (refreshTokenString string, err error) {
