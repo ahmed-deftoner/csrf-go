@@ -2,4 +2,9 @@ package templates
 
 import "text/template"
 
-var templates = template.Must(template.ParseFiles("./server/templates/templateFiles/login.tmpl", "./server/templates/templateFiles/register.tmpl", "./server/templates/templateFiles/restricted.tmpl"))
+type Login struct {
+	BalertUser bool
+	AlertMsg   string
+}
+
+var templates = template.Must(template.ParseFiles("./server/templates/templatefiles/login.tmpl", "./server/templates/templatefiles/register.tmpl", "./server/templates/templatefiles/restricted.tmpl"))
