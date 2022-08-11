@@ -2,6 +2,11 @@ package templates
 
 import "text/template"
 
+type Register struct {
+	BalertUser bool
+	AlertMsg   string
+}
+
 type Login struct {
 	BalertUser bool
 	AlertMsg   string
