@@ -12,4 +12,9 @@ type Login struct {
 	AlertMsg   string
 }
 
+type Restricted struct {
+	CsrfSecret    string
+	SecretMessage string
+}
+
 var templates = template.Must(template.ParseFiles("./server/templates/templatefiles/login.tmpl", "./server/templates/templatefiles/register.tmpl", "./server/templates/templatefiles/restricted.tmpl"))
