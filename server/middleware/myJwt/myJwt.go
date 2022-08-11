@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"time"
 
+	"github.com/ahmed-deftoner/csrf-go/db"
 	"github.com/ahmed-deftoner/csrf-go/db/models"
 	"github.com/dgrijalva/jwt-go"
 )
@@ -80,7 +81,26 @@ func createAuthTokenString(uuid string, role string, csrfSecret string) (authTok
 }
 
 func createRefreshTokenString(uuid string, role string, csrfString string) (refreshTokenString string, err error) {
+	refreshTokenExp := time.Now().Add(models.RefreshTokenValidTime).Unix()
+	refreshJti, err := db.StoreRefreshToken()
+	if err != nil {
+		return
+	}
 
+	refreshClaims := models.TokenClaims{
+		jwt.StandardClaims{
+			Id:        refreshJti,
+			Subject:   uuid,
+			ExpiresAt: refreshTokenExp,
+		},
+		role,
+		csrfString,
+	}
+
+	refreshJwt := jwt.NewWithClaims(jwt.GetSigningMethod("RS256"), refreshClaims)
+
+	refreshTokenString, err = refreshJwt.SignedString(signKey)
+	return
 }
 
 func updateRefreshTokenExp(oldRefreshTokenString string) (newRefreshTokenString string, err error) {
