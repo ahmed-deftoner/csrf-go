@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ahmed-deftoner/csrf-go/middleware/myJwt"
+	myjwt "github.com/ahmed-deftoner/csrf-go/server/middleware/myJwt"
 	"github.com/ahmed-deftoner/csrf-go/server/templates"
 	"github.com/justinas/alice"
 )
@@ -43,7 +43,7 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/restricted":
 		csrfSecret := getCsrfToken(r)
-		templates.RenderTemplate(w, "restricted", &templates.RestrictedPage{csrfSecret, "Hello Ahmed!"})
+		templates.RenderTemplate(w, "restricted", &templates.Restricted{csrfSecret, "Hello Ahmed!"})
 
 	case "/login":
 		switch r.Method {
@@ -91,7 +91,7 @@ func nullifyCookies(w *http.ResponseWriter, r *http.Request) {
 		log.Panic("panic: %+v", refreshErr)
 		http.Error(*w, http.StatusText(500), 500)
 	}
-	myJwt.RevokeRefreshToken(RefreshCookie.Value)
+	myjwt.RevokeRefreshToken(RefreshCookie.Value)
 }
 
 func setAuthandRefreshCookies(w *http.ResponseWriter, authTokenString string, refreshTokenString string) {
