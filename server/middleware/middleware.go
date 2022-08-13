@@ -78,6 +78,11 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					http.Error(w, http.StatusText(500), 500)
 				}
+
+				setAuthandRefreshCookies(&w, authTokenString, refreshTokenString)
+				w.Header().Set("X-CSRF-Token", csrfSecret)
+
+				w.WriteHeader(http.StatusOK)
 			}
 		default:
 		}
