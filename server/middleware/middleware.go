@@ -66,6 +66,13 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 			if err == nil {
 				// templates.RenderTemplate(w, "register", &templates.RegisterPage{ true, "Username not available!" })
 				w.WriteHeader(http.StatusUnauthorized)
+			} else {
+				role := "user"
+				uuid, err = db.StoreUser(strings.Join(r.Form["username"], ""), strings.Join(r.Form["password"], ""), role)
+				if err != nil {
+					http.Error(w, http.StatusText(500), 500)
+				}
+				log.Println("uuid: " + uuid)
 			}
 		default:
 		}
