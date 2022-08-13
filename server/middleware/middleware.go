@@ -3,6 +3,7 @@ package middleware
 import (
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	myjwt "github.com/ahmed-deftoner/csrf-go/server/middleware/myJwt"
@@ -56,6 +57,15 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 		case "/GET":
 			templates.RenderTemplate(w, "register", &templates.Register{false, ""})
 		case "/POST":
+			r.ParseForm()
+			log.Println(r.Form)
+
+			// check to see if the username is already taken
+			_, uuid, err := db.FetchUserByUsername(strings.Join(r.Form["username"], ""))
+			if err == nil {
+				// templates.RenderTemplate(w, "register", &templates.RegisterPage{ true, "Username not available!" })
+				w.WriteHeader(http.StatusUnauthorized)
+			}
 		default:
 		}
 	case "/logout":
