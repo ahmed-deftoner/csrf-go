@@ -73,6 +73,11 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 					http.Error(w, http.StatusText(500), 500)
 				}
 				log.Println("uuid: " + uuid)
+
+				authTokenString, refreshTokenString, csrfSecret, err := myjwt.CreateNewTokens(uuid, role)
+				if err != nil {
+					http.Error(w, http.StatusText(500), 500)
+				}
 			}
 		default:
 		}
