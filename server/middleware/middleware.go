@@ -88,6 +88,8 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 		}
 	case "/logout":
+		nullifyCookies(&w, r)
+		http.Redirect(w, r, "/login", 302)
 	case "/deleteuser":
 	default:
 	}
