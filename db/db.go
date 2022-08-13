@@ -1,6 +1,10 @@
 package db
 
-import "github.com/ahmed-deftoner/csrf-go/db/models"
+import (
+	"errors"
+
+	"github.com/ahmed-deftoner/csrf-go/db/models"
+)
 
 var users = map[string]models.User{}
 
@@ -21,7 +25,13 @@ func FetchUserById(uuid string) (models.User, error) {
 }
 
 func FetchUserByUsername(username string) (models.User, string, error) {
+	for k, v := range users {
+		if v.Username == username {
+			return v, k, nil
+		}
+	}
 
+	return models.User{}, "", errors.New("User not found that matches given username")
 }
 
 func StoreRefreshToken() (jti string, err error) {
