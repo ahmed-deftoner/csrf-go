@@ -54,6 +54,7 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 	case "/register":
 		switch r.Method {
 		case "/GET":
+			templates.RenderTemplate(w, "register", &templates.Register{false, ""})
 		case "/POST":
 		default:
 		}
