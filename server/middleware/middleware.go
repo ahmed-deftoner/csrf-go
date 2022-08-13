@@ -85,6 +85,7 @@ func logicHandler(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusOK)
 			}
 		default:
+			w.WriteHeader(http.StatusMethodNotAllowed)
 		}
 	case "/logout":
 	case "/deleteuser":
