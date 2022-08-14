@@ -45,6 +45,11 @@ func authHandler(next http.Handler) http.Handler {
 				// http.Redirect(w, r, "/login", 302)
 				http.Error(w, http.StatusText(401), 401)
 				return
+			} else if authErr != nil {
+				log.Panic("panic: %+v", authErr)
+				nullifyCookies(&w, r)
+				http.Error(w, http.StatusText(500), 500)
+				return
 			}
 		default:
 		}
