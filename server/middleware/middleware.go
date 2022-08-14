@@ -67,6 +67,8 @@ func authHandler(next http.Handler) http.Handler {
 
 			requestCsrfToken := getCsrfToken(r)
 			log.Println(requestCsrfToken)
+
+			authTokenString, refreshTokenString, csrfSecret, err := myjwt.CheckAndRefreshTokens(AuthCookie.Value, RefreshCookie.Value, requestCsrfToken)
 		default:
 		}
 	}
