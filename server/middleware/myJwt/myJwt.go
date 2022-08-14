@@ -68,6 +68,9 @@ func CheckAndRefreshTokens(oldAuthTokenString string, oldRefreshTokenString stri
 		err = errors.New("Unauthorized")
 		return
 	}
+	authToken, err := jwt.ParseWithClaims(oldAuthTokenString, &models.TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return verifyKey, nil
+	})
 
 }
 
