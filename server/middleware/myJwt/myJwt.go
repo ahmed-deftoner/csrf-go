@@ -60,7 +60,7 @@ func CreateNewTokens(uuid string, role string) (authTokenString, refreshTokenStr
 	return
 }
 
-func CheckAndRefreshTokens() {
+func CheckAndRefreshTokens(oldAuthTokenString string, oldRefreshTokenString string, oldCsrfSecret string) (newAuthTokenString, newRefreshTokenString, newCsrfSecret string, err error) {
 
 }
 
