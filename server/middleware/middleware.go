@@ -93,7 +93,9 @@ func authHandler(next http.Handler) http.Handler {
 			w.Header().Set("X-CSRF-Token", csrfSecret)
 		default:
 		}
+		next.ServeHTTP(w, r)
 	}
+
 	return http.HandlerFunc(fn)
 }
 
