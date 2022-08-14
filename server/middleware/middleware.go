@@ -69,6 +69,15 @@ func authHandler(next http.Handler) http.Handler {
 			log.Println(requestCsrfToken)
 
 			authTokenString, refreshTokenString, csrfSecret, err := myjwt.CheckAndRefreshTokens(AuthCookie.Value, RefreshCookie.Value, requestCsrfToken)
+			if err != nil {
+				if err.Error() == "Unauthorized" {
+					log.Println("Unauthorized attempt! JWT's not valid!")
+					// nullifyTokenCookies(&w, r)
+					// http.Redirect(w, r, "/login", 302)
+					http.Error(w, http.StatusText(401), 401)
+					return
+				}
+			}
 		default:
 		}
 	}
