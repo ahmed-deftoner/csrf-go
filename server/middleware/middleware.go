@@ -51,6 +51,19 @@ func authHandler(next http.Handler) http.Handler {
 				http.Error(w, http.StatusText(500), 500)
 				return
 			}
+
+			RefreshCookie, refreshErr := r.Cookie("RefreshToken")
+			if refreshErr == http.ErrNoCookie {
+				log.Println("Unauthorized attempt! No refresh cookie")
+				nullifyCookies(&w, r)
+				http.Redirect(w, r, "/login", 302)
+				return
+			} else if refreshErr != nil {
+				log.Panic("panic: %+v", refreshErr)
+				nullifyCookies(&w, r)
+				http.Error(w, http.StatusText(500), 500)
+				return
+			}
 		default:
 		}
 	}
