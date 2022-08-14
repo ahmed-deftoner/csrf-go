@@ -71,7 +71,15 @@ func CheckAndRefreshTokens(oldAuthTokenString string, oldRefreshTokenString stri
 	authToken, err := jwt.ParseWithClaims(oldAuthTokenString, &models.TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return verifyKey, nil
 	})
-
+	authTokenClaims, ok := authToken.Claims.(*models.TokenClaims)
+	if !ok {
+		return
+	}
+	if oldCsrfSecret != authTokenClaims.Csrf {
+		log.Println("CSRF token doesn't match jwt!")
+		err = errors.New("Unauthorized")
+		return
+	}
 }
 
 func createAuthTokenString(uuid string, role string, csrfSecret string) (authTokenString string, err error) {
