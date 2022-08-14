@@ -2,7 +2,9 @@ package myjwt
 
 import (
 	"crypto/rsa"
+	"errors"
 	"io/ioutil"
+	"log"
 	"time"
 
 	"github.com/ahmed-deftoner/csrf-go/db"
@@ -61,6 +63,11 @@ func CreateNewTokens(uuid string, role string) (authTokenString, refreshTokenStr
 }
 
 func CheckAndRefreshTokens(oldAuthTokenString string, oldRefreshTokenString string, oldCsrfSecret string) (newAuthTokenString, newRefreshTokenString, newCsrfSecret string, err error) {
+	if oldCsrfSecret == "" {
+		log.Println("No CSRF token!")
+		err = errors.New("Unauthorized")
+		return
+	}
 
 }
 
