@@ -64,6 +64,9 @@ func authHandler(next http.Handler) http.Handler {
 				http.Error(w, http.StatusText(500), 500)
 				return
 			}
+
+			requestCsrfToken := getCsrfToken(r)
+			log.Println(requestCsrfToken)
 		default:
 		}
 	}
