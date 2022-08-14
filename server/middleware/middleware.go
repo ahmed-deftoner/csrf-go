@@ -85,6 +85,12 @@ func authHandler(next http.Handler) http.Handler {
 				}
 			}
 			log.Println("Successfully recreated jwts")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+
+			// if we've made it this far, everything is valid!
+			// And tokens have been refreshed if need-be
+			setAuthandRefreshCookies(&w, authTokenString, refreshTokenString)
+			w.Header().Set("X-CSRF-Token", csrfSecret)
 		default:
 		}
 	}
