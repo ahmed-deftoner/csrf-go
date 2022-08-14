@@ -80,6 +80,15 @@ func CheckAndRefreshTokens(oldAuthTokenString string, oldRefreshTokenString stri
 		err = errors.New("Unauthorized")
 		return
 	}
+	if authToken.Valid {
+		log.Println("Auth token is valid")
+
+		newCsrfSecret = authTokenClaims.Csrf
+
+		newRefreshTokenString, err = updateRefreshTokenExp(oldRefreshTokenString)
+		newAuthTokenString = oldAuthTokenString
+		return
+	}
 }
 
 func createAuthTokenString(uuid string, role string, csrfSecret string) (authTokenString string, err error) {
