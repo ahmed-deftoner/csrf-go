@@ -35,6 +35,17 @@ func authHandler(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case "/restricted", "/logout", "/deleteuser":
+			log.Println("In auth restricted section")
+
+			// read cookies
+			AuthCookie, authErr := r.Cookie("AuthToken")
+			if authErr == http.ErrNoCookie {
+				log.Println("Unauthorized attempt! No auth cookie")
+				nullifyCookies(&w, r)
+				// http.Redirect(w, r, "/login", 302)
+				http.Error(w, http.StatusText(401), 401)
+				return
+			}
 		default:
 		}
 	}
