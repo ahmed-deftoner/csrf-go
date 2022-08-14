@@ -76,8 +76,15 @@ func authHandler(next http.Handler) http.Handler {
 					// http.Redirect(w, r, "/login", 302)
 					http.Error(w, http.StatusText(401), 401)
 					return
+				} else {
+					log.Println("err not nil")
+					log.Panic("panic: %+v", err)
+					// nullifyTokenCookies(&w, r)
+					http.Error(w, http.StatusText(500), 500)
+					return
 				}
 			}
+			log.Println("Successfully recreated jwts")
 		default:
 		}
 	}
