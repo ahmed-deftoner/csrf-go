@@ -70,7 +70,22 @@ func FetchUserByUsername(username string) (models.User, string, error) {
 }
 
 func StoreRefreshToken() (jti string, err error) {
+	jti, err = randomstrings.GenerateRandomString(32)
+	if err != nil {
+		return jti, err
+	}
 
+	// check to make sure our jti is unique
+	for refreshTokens[jti] != "" {
+		jti, err = randomstrings.GenerateRandomString(32)
+		if err != nil {
+			return jti, err
+		}
+	}
+
+	refreshTokens[jti] = "valid"
+
+	return jti, err
 }
 
 func DeleteRefreshToken(jti string) {
