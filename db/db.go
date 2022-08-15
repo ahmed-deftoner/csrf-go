@@ -5,6 +5,7 @@ import (
 
 	"github.com/ahmed-deftoner/csrf-go/db/models"
 	"github.com/ahmed-deftoner/csrf-go/randomstrings"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var users = map[string]models.User{}
@@ -84,7 +85,8 @@ func LogUserIn(username string, password string) (models.User, string, error) {
 }
 
 func generateBcryptHash(password string) (string, error) {
-
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(hash[:]), err
 }
 
 func checkPasswordAgainstHash(hash string, password string) error {
