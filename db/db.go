@@ -46,7 +46,15 @@ func DeleteUser(uuid string) {
 }
 
 func FetchUserById(uuid string) (models.User, error) {
+	u := users[uuid]
+	blankUser := models.User{}
 
+	if blankUser != u {
+		// found the user
+		return u, nil
+	} else {
+		return u, errors.New("User not found that matches given uuid")
+	}
 }
 
 func FetchUserByUsername(username string) (models.User, string, error) {
