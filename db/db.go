@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/ahmed-deftoner/csrf-go/db/models"
+	"github.com/ahmed-deftoner/csrf-go/randomstrings"
 )
 
 var users = map[string]models.User{}
@@ -15,7 +16,29 @@ func DBInit() {
 }
 
 func StoreUser(username string, password string, role string) (uuid string, err error) {
+	uuid, err = randomstrings.GenerateRandomString(32)
+	if err != nil {
+		return "", err
+	}
 
+	// check to make sure our uuid is unique
+	u := models.User{}
+	for u != users[uuid] {
+		uuid, err = randomstrings.GenerateRandomString(32)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	passwordHash, hashErr := generateBcryptHash(password)
+	if hashErr != nil {
+		err = hashErr
+		return
+	}
+
+	users[uuid] = models.User{username, passwordHash, role}
+
+	return uuid, err
 }
 
 func DeleteUser(uuid string) {
