@@ -8,8 +8,10 @@ import (
 
 var users = map[string]models.User{}
 
-func DBInit() {
+var refreshTokens map[string]string
 
+func DBInit() {
+	refreshTokens = make(map[string]string)
 }
 
 func StoreUser(username string, password string, role string) (uuid string, err error) {
