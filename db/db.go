@@ -2,6 +2,7 @@ package db
 
 import (
 	"errors"
+	"log"
 
 	"github.com/ahmed-deftoner/csrf-go/db/models"
 	"github.com/ahmed-deftoner/csrf-go/randomstrings"
@@ -81,7 +82,13 @@ func CheckRefreshToken(jti string) bool {
 }
 
 func LogUserIn(username string, password string) (models.User, string, error) {
+	user, uuid, userErr := FetchUserByUsername(username)
+	log.Println(user, uuid, userErr)
+	if userErr != nil {
+		return models.User{}, "", userErr
+	}
 
+	return user, uuid, checkPasswordAgainstHash(user.PasswordHash, password)
 }
 
 func generateBcryptHash(password string) (string, error) {
