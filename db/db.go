@@ -89,7 +89,7 @@ func StoreRefreshToken() (jti string, err error) {
 }
 
 func DeleteRefreshToken(jti string) {
-
+	delete(refreshTokens, jti)
 }
 
 func CheckRefreshToken(jti string) bool {
