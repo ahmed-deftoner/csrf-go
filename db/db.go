@@ -93,7 +93,7 @@ func DeleteRefreshToken(jti string) {
 }
 
 func CheckRefreshToken(jti string) bool {
-
+	return refreshTokens[jti] != ""
 }
 
 func LogUserIn(username string, password string) (models.User, string, error) {
