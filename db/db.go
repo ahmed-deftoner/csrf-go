@@ -42,7 +42,7 @@ func StoreUser(username string, password string, role string) (uuid string, err 
 }
 
 func DeleteUser(uuid string) {
-
+	delete(users, uuid)
 }
 
 func FetchUserById(uuid string) (models.User, error) {
