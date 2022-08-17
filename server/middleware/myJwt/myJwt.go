@@ -160,7 +160,9 @@ func createRefreshTokenString(uuid string, role string, csrfString string) (refr
 }
 
 func updateRefreshTokenExp(oldRefreshTokenString string) (newRefreshTokenString string, err error) {
-
+	refreshToken, err := jwt.ParseWithClaims(oldRefreshTokenString, &models.TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return verifyKey, nil
+	})
 }
 
 func updateAuthTokenString(refreshTokenString string, oldAuthTokenString string) (newAuthTokenString, csrfSecret string, err error) {
