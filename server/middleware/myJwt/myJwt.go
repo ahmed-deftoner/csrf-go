@@ -163,6 +163,11 @@ func updateRefreshTokenExp(oldRefreshTokenString string) (newRefreshTokenString 
 	refreshToken, err := jwt.ParseWithClaims(oldRefreshTokenString, &models.TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return verifyKey, nil
 	})
+
+	oldRefreshTokenClaims, ok := refreshToken.Claims.(*models.TokenClaims)
+	if !ok {
+		return
+	}
 }
 
 func updateAuthTokenString(refreshTokenString string, oldAuthTokenString string) (newAuthTokenString, csrfSecret string, err error) {
